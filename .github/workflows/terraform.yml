@@ -1,4 +1,4 @@
-name: Terraform Actions
+name: Terraform AKS Deployment
 
 on:
   workflow_dispatch:
@@ -23,6 +23,9 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
+
+      - name: Change Directory
+        run: cd kubernetes/microsoft_azure/terraform_aks_deployment
 
       - name: Terraform Init
         run: terraform init
