@@ -32,24 +32,27 @@ jobs:
 
       - name: Terraform Plan
         if: ${{ github.event.inputs.action == 'plan' }}
-        run: terraform plan \
-          -var="client_id=${{ secrets.ARM_CLIENT_ID }}" \
-          -var="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" \
-          -var="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" \
-          -var="tenant_id=${{ secrets.ARM_TENANT_ID }}"
+        run: |
+          terraform plan \
+            -var="client_id=${{ secrets.ARM_CLIENT_ID }}" \
+            -var="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" \
+            -var="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" \
+            -var="tenant_id=${{ secrets.ARM_TENANT_ID }}"
 
       - name: Terraform Apply
         if: ${{ github.event.inputs.action == 'apply' }}
-        run: terraform apply -auto-approve \
-          -var="client_id=${{ secrets.ARM_CLIENT_ID }}" \
-          -var="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" \
-          -var="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" \
-          -var="tenant_id=${{ secrets.ARM_TENANT_ID }}"
+        run: |
+          terraform apply -auto-approve \
+            -var="client_id=${{ secrets.ARM_CLIENT_ID }}" \
+            -var="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" \
+            -var="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" \
+            -var="tenant_id=${{ secrets.ARM_TENANT_ID }}"
 
       - name: Terraform Destroy
         if: ${{ github.event.inputs.action == 'destroy' }}
-        run: terraform destroy -auto-approve \
-          -var="client_id=${{ secrets.ARM_CLIENT_ID }}" \
-          -var="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" \
-          -var="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" \
-          -var="tenant_id=${{ secrets.ARM_TENANT_ID }}"
+        run: |
+          terraform destroy -auto-approve \
+            -var="client_id=${{ secrets.ARM_CLIENT_ID }}" \
+            -var="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" \
+            -var="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" \
+            -var="tenant_id=${{ secrets.ARM_TENANT_ID }}"
