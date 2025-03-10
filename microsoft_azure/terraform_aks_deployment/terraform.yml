@@ -1,0 +1,52 @@
+name: Terraform Actions
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Choose action'
+        required: true
+        default: 'plan'
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        if: ${{ github.event.inputs.action == 'plan' }}
+        run: terraform plan \
+          -var="client_id=${{ secrets.ARM_CLIENT_ID }}" \
+          -var="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" \
+          -var="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" \
+          -var="tenant_id=${{ secrets.ARM_TENANT_ID }}"
+
+      - name: Terraform Apply
+        if: ${{ github.event.inputs.action == 'apply' }}
+        run: terraform apply -auto-approve \
+          -var="client_id=${{ secrets.ARM_CLIENT_ID }}" \
+          -var="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" \
+          -var="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" \
+          -var="tenant_id=${{ secrets.ARM_TENANT_ID }}"
+
+      - name: Terraform Destroy
+        if: ${{ github.event.inputs.action == 'destroy' }}
+        run: terraform destroy -auto-approve \
+          -var="client_id=${{ secrets.ARM_CLIENT_ID }}" \
+          -var="client_secret=${{ secrets.ARM_CLIENT_SECRET }}" \
+          -var="subscription_id=${{ secrets.ARM_SUBSCRIPTION_ID }}" \
+          -var="tenant_id=${{ secrets.ARM_TENANT_ID }}"
